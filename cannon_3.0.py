@@ -3,6 +3,8 @@ import timeit
 
 start = timeit.default_timer()
 
+#BLA
+
 #Constant parameters for the modelling
 
 SCALE_FACTOR = 0.01 # Scale factor of the grid that is calculated automatically by the algorithm
