@@ -1,7 +1,9 @@
 import math
 import timeit
+import geo_operations
 
 start = timeit.default_timer()
+
 
 
 #Constant parameters for the modelling
@@ -18,14 +20,14 @@ DEBUG = False # If set to true, the software will be verbose. Partners with the 
 
 # INPUT DATA HERE
 
-X_CANNON = 8 #Cannon's X coordinate
-Y_CANNON = 4 #Cannon's Y coordinate
+X_CANNON = 0 #Cannon's X coordinate
+Y_CANNON = 0 #Cannon's Y coordinate
 ANGLE_CANNON = math.pi/4 # Angle the cannon points towards, in radians. Use only angles between 0 and 2 pi
-SPREAD_CANNON = math.pi/4 # The protons' angle of spread, in radians. Use only angles between 0 and 2 pi
+SPREAD_CANNON = math.pi/2 # The protons' angle of spread, in radians. Use only angles between 0 and 2 pi
 #-
 X_FORTRESS = 4 # Circle's center X coordinate
 Y_FORTRESS = 4 # Circle's center Y coordinate
-RADIUS_FORTRESS = 3 # Circle's radius
+RADIUS_FORTRESS = 1 # Circle's radius
 
 #-----------------------------------------------------------------------------------------------------------------
 
@@ -51,8 +53,9 @@ class Circle:
         self.y_0 = y_0
         self.radius = radius
 
-    def belongsTo(self, x, y): #Returns wether or not the point (x,y) belongs to the circle.
-        return ((x - self.x_0)**2 + (y - self.y_0)**2 <= self.radius**2) 
+     ## DEPRECATED
+#    def belongsTo(self, x, y): #Returns wether or not the point (x,y) belongs to the circle.
+#       return ((x - self.x_0)**2 + (y - self.y_0)**2 <= self.radius**2) 
 
 # Defines the cannon and its area of fire
 
@@ -67,20 +70,21 @@ class LineOfSight: # References to the fact that the protons trajectory is simil
         #
         self.max_angle = angle + spread/2
         self.min_angle = angle - spread/2
-
-    def getAngle(self, x, y): # given a vector defined by x and y, returns its angle
-
-        angle = math.acos(x/((x**2 + y**2)**0.5))
-
-        if(x > 0 and y > 0): return angle # First quad.
-        if(x < 0 and y > 0): return angle # Second quad.
-        if(x < 0 and y < 0): return (2*(math.pi - angle) + angle) # Third quad.
-        if(x > 0 and y < 0): return (2*math.pi - angle) # Fourth quad.
+    
+     ## DEPRECATED
+#    def getAngle(self, x, y): # given a vector defined by x and y, returns its angle according to the X axis
+#
+#        angle = math.acos(x/((x**2 + y**2)**0.5))
+#
+#        if(x > 0 and y > 0): return angle # First quad.
+#        if(x < 0 and y > 0): return angle # Second quad.
+#        if(x < 0 and y < 0): return (2*(math.pi - angle) + angle) # Third quad.
+#        if(x > 0 and y < 0): return (2*math.pi - angle) # Fourth quad.
 
 
     def isHit(self, x, y): # Determines if the point is within the area of sight of the cannon, or not
 
-        self.line_angle = self.getAngle(x - self.x_0, y - self.y_0)
+        self.line_angle = geo_operations.angle(x - self.x_0, y - self.y_0)
 
         return (self.line_angle >= self.min_angle and self.line_angle <= self.max_angle)
 
@@ -105,13 +109,16 @@ else:
     area_grid = length**2
 
 
-
+## DEBUG PRINTOUTS
+show(geo_operations.angle.__doc__)
+show(geo_operations.belongstocircle.__doc__)
 show(x_begin, x_end, y_end, y_iterate)
+##
 
 total_area = 0
 
 
-if(not fortress.belongsTo(cannon.x_0, cannon.y_0) or CAN_BE_INSIDE_FORTRESS):
+if(not geo_operations.belongstocircle(cannon.x_0, cannon.y_0, fortress.x_0, fortress.y_0, fortress.radius) or CAN_BE_INSIDE_FORTRESS):
 
     #total_area = 0
 
@@ -123,7 +130,7 @@ if(not fortress.belongsTo(cannon.x_0, cannon.y_0) or CAN_BE_INSIDE_FORTRESS):
 
             show("y:",y_iterate,"x:",x_iterate)
         
-            if(fortress.belongsTo(x_iterate, y_iterate) and cannon.isHit(x_iterate, y_iterate)):
+            if(geo_operations.belongstocircle(x_iterate, y_iterate, fortress.x_0, fortress.y_0, fortress.radius) and cannon.isHit(x_iterate, y_iterate)):
                 total_area += area_grid
                 show("Total area so far:", total_area)
         
