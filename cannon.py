@@ -18,14 +18,14 @@ DEBUG = False # If set to true, the software will be verbose. Partners with the 
 
 # INPUT DATA HERE
 
-X_CANNON = 8 #Cannon's X coordinate
-Y_CANNON = 4 #Cannon's Y coordinate
+X_CANNON = 0 #Cannon's X coordinate
+Y_CANNON = 0 #Cannon's Y coordinate
 ANGLE_CANNON = math.pi/4 # Angle the cannon points towards, in radians. Use only angles between 0 and 2 pi
-SPREAD_CANNON = math.pi/4 # The protons' angle of spread, in radians. Use only angles between 0 and 2 pi
+SPREAD_CANNON = math.pi/2 # The protons' angle of spread, in radians. Use only angles between 0 and 2 pi
 #-
 X_FORTRESS = 4 # Circle's center X coordinate
 Y_FORTRESS = 4 # Circle's center Y coordinate
-RADIUS_FORTRESS = 3 # Circle's radius
+RADIUS_FORTRESS = 1 # Circle's radius
 
 #-----------------------------------------------------------------------------------------------------------------
 
