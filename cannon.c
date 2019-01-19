@@ -9,7 +9,7 @@ typedef int bool;
 
 /* System constants & Debug miscellania */
 
-#define SCALE_FACTOR 0.001
+#define SCALE_FACTOR 0.005
 #define DEBUG false
 
 
@@ -31,6 +31,7 @@ struct Circle {
 
 } fortress;
 
+
 // Returns wether or not the point (x,y) belongs to the circle.
 bool belongsTo(double x, double y, double x_0, double y_0, double radius){
 
@@ -38,7 +39,8 @@ bool belongsTo(double x, double y, double x_0, double y_0, double radius){
 
 }
 
-/* 		*/
+
+/*	*/
 
 /* Defining the Cannon's struct and functions */
 
@@ -84,6 +86,54 @@ struct Iteration {
 
 } iterate;
 
+struct IterateCircle{
+
+	double total_area, dangle, dradius, area_grid;
+	double angle;
+	
+
+
+
+
+} itcirc;
+
+
+// Iterates over a circle (i.e. the fortress itself)
+
+double getx(){ return (fortress.x_0 + fortress.radius * cos(itcirc.angle)); }
+
+double gety() { return (fortress.y_0 + fortress.radius * sin(itcirc.angle)); }
+
+void scan_circle(){
+
+	itcirc.dangle = 5*SCALE_FACTOR;
+	itcirc.dradius = fortress.radius * SCALE_FACTOR;
+	itcirc.area_grid = itcirc.dradius * itcirc.dangle * fortress.radius;
+	itcirc.total_area = 0;
+
+	
+	while(fortress.radius > 0){
+		
+		while(itcirc.angle < 2*M_PI){
+		
+			if(isHit(getx(), gety(), cannon.x_0, cannon.y_0, cannon.angle, cannon.spread)) { itcirc.total_area += itcirc.area_grid; }
+			
+			itcirc.angle += itcirc.dangle;
+
+		}
+
+		fortress.radius -= itcirc.dradius;
+		itcirc.angle = 0;
+		itcirc.area_grid = itcirc.dradius * itcirc.dangle * fortress.radius;
+
+	}
+
+	printf("%.1lf\n", itcirc.total_area);
+
+		
+}
+
+
 // Iterates over a circunscribed square in relation to the fortress's circle
 
 void scan(){ 
@@ -116,21 +166,10 @@ void scan(){
 		iterate.y_i -= iterate.length;
 	}
 	
-	printf("%.1lf", iterate.total_area);
+	printf("%.1lf\n", iterate.total_area);
 
 }
 
-// Iterates over a circle (i.e. the fortress itself)
-
-void scan_circle(){
-
-
-	
-
-	
-
-
-}
 
 
 
