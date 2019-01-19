@@ -84,6 +84,8 @@ struct Iteration {
 
 } iterate;
 
+// Iterates over a circunscribed square in relation to the fortress's circle
+
 void scan(){ 
 
 	iterate.length = 2 * fortress.radius * SCALE_FACTOR;
@@ -117,6 +119,26 @@ void scan(){
 	printf("%.1lf", iterate.total_area);
 
 }
+
+// Iterates over a circle (i.e. the fortress itself)
+
+void scan_circle(){
+
+
+	
+
+	
+
+
+}
+
+
+
+
+
+/*  */
+
+
 
 /* I/o Voodoo */
 
